@@ -1,0 +1,45 @@
+# ─── Core ML ───────────────────────────────────────────────
+torch>=2.1.0
+torchvision>=0.16.0
+
+# ─── CLIP ──────────────────────────────────────────────────
+# OpenAI CLIP (install via git, not pip)
+# Run: pip install git+https://github.com/openai/CLIP.git
+ftfy>=6.1.1
+regex>=2023.0.0
+
+# ─── Embeddings & Vector Store ─────────────────────────────
+faiss-cpu>=1.7.4              # use faiss-gpu on Colab if available
+sentence-transformers>=2.7.0  # for text embeddings
+
+# ─── LangChain ─────────────────────────────────────────────
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-core>=0.2.0
+
+# ─── Document Ingestion ────────────────────────────────────
+pymupdf>=1.24.0               # PDF parsing (fitz)
+Pillow>=10.0.0                # image loading
+python-docx>=1.1.0            # optional: .docx ingestion
+
+# ─── Captioning (optional, GPU recommended) ────────────────
+transformers>=4.40.0          # BLIP captioning model
+accelerate>=0.29.0
+
+# ─── LLM (local via Ollama) ────────────────────────────────
+ollama>=0.2.0                 # Ollama Python client
+
+# ─── UI ────────────────────────────────────────────────────
+streamlit>=1.35.0
+
+# ─── Utilities ─────────────────────────────────────────────
+numpy>=1.26.0
+pandas>=2.2.0
+tqdm>=4.66.0
+python-dotenv>=1.0.0
+pydantic>=2.7.0
+loguru>=0.7.0                 # clean logging
+
+# ─── Evaluation ────────────────────────────────────────────
+ragas>=0.1.9                  # RAG evaluation metrics
+datasets>=2.19.0              # needed by ragas
