@@ -12,7 +12,3 @@ def generate_caption(pil_image) -> str:
     caption = processor.decode(output_ids[0], skip_special_tokens=True)
 
     return caption
-
-# processor converts PIL image → tensor done
-# model generates token ids done
-# processor decodes token ids → string done
