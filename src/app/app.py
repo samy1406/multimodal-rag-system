@@ -41,8 +41,8 @@ if st.button("Search"):
 # 3. Display results loop
 for result in results:
     idx = result["index"]
-    # if idx == -1:        # skip invalid
-    #     continue
+    if idx == -1:        # skip invalid
+        continue
     meta = metadata[idx]        # get metadata for this vector
     if meta["type"] == "text":
         st.write(meta["content"])

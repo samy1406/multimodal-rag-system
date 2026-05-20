@@ -14,8 +14,10 @@ def get_model():
     if model is None:
         model, preprocess = clip.load("ViT-B/32", device=device)
     return model, preprocess
+
 # uses the sentence transformer
 def embed_text(texts: list[str]) -> np.ndarray:
+    model, preprocess = get_model()
     tokens = clip.tokenize(texts, truncate=True).to(device)
     text_feature = model.encode_text(tokens)
     text_feature /= text_feature.norm(dim=-1, keepdim=True)
@@ -24,6 +26,7 @@ def embed_text(texts: list[str]) -> np.ndarray:
 
 # uses CLIP embedding
 def embed_image(pil_images: list) -> np.ndarray:
+    model, preprocess = get_model()
     image_features = []
     for i in range(len(pil_images)):
         image = preprocess(pil_images[i]).unsqueeze(0).to(device)
