@@ -1,19 +1,20 @@
 import streamlit as st
-import ingestion.embedder as emd
-import retrieval.searcher as search
-import ingestion.metadata_store as metadataLoad
+# import ingestion.embedder as emd
+# import retrieval.searcher as search
+from src.ingestion import metadata_store as metadataLoad
 from PIL import Image
+from src.ingestion import embedder as emd
+from src.retrieval import searcher as search
 
-
-metadata = metadataLoad.load_metadata("")
+metadata = metadataLoad.load_metadata("metadata.json")
 
 st.title("Multimodal RAG System")
 
 # 1. Input section
 query_text = st.text_input("Enter your query")
 query_image = st.file_uploader("Upload an image", type=["jpg","png"])
-index = search.load_index(path="path")
-
+index = search.load_index(path="data/index/faiss.index")
+results = []
 # 2. On button click
 if st.button("Search"):
     if query_text:
@@ -28,8 +29,9 @@ if st.button("Search"):
 
 # 3. Display results loop
 for result in results:
-    # check type → show accordingly
-    if result["type"] == "text":
-        st.write(metadata[result["index"]]["content"])
-    elif result["type"] == "image":
-        st.image(metadata[result["index"]]["image_path"])
+    idx = result["index"]
+    meta = metadata[idx]        # get metadata for this vector
+    if meta["type"] == "text":
+        st.write(meta["content"])
+    elif meta["type"] == "image":
+        st.image(meta["image_path"])

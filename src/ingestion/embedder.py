@@ -8,7 +8,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device=device)
 # uses the sentence transformer
 def embed_text(texts: list[str]) -> np.ndarray:
-    tokens = clip.tokenize(texts).to(device)
+    tokens = clip.tokenize(texts, truncate=True).to(device)
     text_feature = model.encode_text(tokens)
     text_feature /= text_feature.norm(dim=-1, keepdim=True)
     text_feature = text_feature.detach().cpu().numpy()

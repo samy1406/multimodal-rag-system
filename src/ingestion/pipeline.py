@@ -1,15 +1,12 @@
 #pdf_loader → chunker (text) → embedder → captioner (images) → metadata_store → index_builder
-import pdf_loader
-import chunker
-import embedder
-import captioner
-import metadata_store
-import retrieval.index_builder as index_builder
+from src.ingestion import pdf_loader, chunker, embedder, captioner, metadata_store
+from src.retrieval import index_builder
 import numpy as np
 from PIL import Image
 
 
 def run_pipeline(pdf_path):
+    print("run pipeline function called")
     pages = pdf_loader.load_pdf(pdf_path)
     
     all_vectors = []
@@ -49,5 +46,9 @@ def run_pipeline(pdf_path):
     # build + save index
     all_vectors = np.vstack(all_vectors)
     index = index_builder.build_index(all_vectors)
-    index_builder.save_index(index, "/data/index/")
+    index_builder.save_index(index, "data/index/faiss.index")
     metadata_store.save_metadata(all_metadata, "metadata.json")
+
+if __name__ == "__main__":
+    print("main function called")
+    run_pipeline("data/{sample_docs}/sample-10-page-pdf-a4-size.pdf")
