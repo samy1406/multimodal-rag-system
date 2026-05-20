@@ -5,7 +5,15 @@ import numpy as np
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model, preprocess = clip.load("ViT-B/32", device=device)
+# model, preprocess = clip.load("ViT-B/32", device=device)
+model = None
+preprocess = None
+
+def get_model():
+    global model, preprocess
+    if model is None:
+        model, preprocess = clip.load("ViT-B/32", device=device)
+    return model, preprocess
 # uses the sentence transformer
 def embed_text(texts: list[str]) -> np.ndarray:
     tokens = clip.tokenize(texts, truncate=True).to(device)

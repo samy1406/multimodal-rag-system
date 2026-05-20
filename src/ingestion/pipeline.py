@@ -30,19 +30,27 @@ def run_pipeline(pdf_path):
                 current_id += 1
         
         # IMAGES
-        for img in page["images"]:
-            caption = captioner.generate_caption(img)
-            vector = embedder.embed_image([img])
-            all_vectors.append(vector[0])
-            all_metadata[current_id] = {
-                "type": "image",
-                "source": pdf_path,
-                "page": page["page_number"],
-                "content": caption,
-                "image_path": pdf_path + "_page_" + str(page["page_number"])
-            }
-            current_id += 1
-    
+            import os
+            for img_idx, img in enumerate(page["images"]):
+                caption = captioner.generate_caption(img)
+                vector = embedder.embed_image([img])
+                all_vectors.append(vector[0])
+                
+                # save image to disk
+                img_save_dir = f"data/extracted_images/page_{page['page_number']}"
+                os.makedirs(img_save_dir, exist_ok=True)
+                img_path = f"{img_save_dir}/img_{img_idx}.png"
+                img.save(img_path)
+                
+                all_metadata[current_id] = {
+                    "type": "image",
+                    "source": pdf_path,
+                    "page": page["page_number"],
+                    "content": caption,
+                    "image_path": img_path  # real path now
+                }
+                current_id += 1
+        
     # build + save index
     all_vectors = np.vstack(all_vectors)
     index = index_builder.build_index(all_vectors)
@@ -51,4 +59,4 @@ def run_pipeline(pdf_path):
 
 if __name__ == "__main__":
     print("main function called")
-    run_pipeline("data/{sample_docs}/sample-10-page-pdf-a4-size.pdf")
+    run_pipeline("data/{sample_docs}/somatosensory.pdf")
